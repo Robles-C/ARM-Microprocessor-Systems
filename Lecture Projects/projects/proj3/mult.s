@@ -1,0 +1,27 @@
+		GLOBAL	mult
+		AREA	mycode,CODE,READONLY
+		ENTRY
+		IMPORT proj3
+		IMPORT avg
+		IMPORT sav
+		
+; read and multiply
+mult    LDR NEXT, [POINT]
+		LDR NEX2, [POIN2]
+
+		MUL R7, NEXT, NEX2
+
+		STR R7, [MULOC]
+
+		ADD POINT, POINT, #4
+		ADD POIN2, POIN2, #4
+		ADD MULOC, MULOC, #4
+
+		SUBS COUNT, COUNT, #1
+		BNE mult
+
+		LDR MULOC, =MLOC
+		MOV COUNT, #10
+		
+		BX LR
+	END

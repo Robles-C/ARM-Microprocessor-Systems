@@ -1,0 +1,20 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; GLOBAL Reset_Handler
+    2 00000000         ; AREA mycode, CODE, Readonly
+    3 00000000         ; Reset_Handler
+    4 00000000         
+    5 00000000         ;code
+    6 00000000         ; MOV R1, #4
+    7 00000000         
+    8 00000000         ;stop B stop
+    9 00000000         ;END 
+                       
+Command Line: --debug --xref --apcs=interwork --depend=.\lab3.d -o.\lab3.o -IC:
+\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\Philips --pred
+efine="__EVAL SETA 1" --list=.\lab3.lst Lab3.s
+331 symbols in table

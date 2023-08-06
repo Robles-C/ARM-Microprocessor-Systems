@@ -1,0 +1,2 @@
+Dependencies for Project 'lab3test', Target 'Target 1': (DO NOT MODIFY !)
+F (.\l3.s)(0x6323E86C)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips--list .\l3.lst --xref -o .\l3.o --depend .\l3.d)

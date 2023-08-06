@@ -1,0 +1,536 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 GLOBAL           user_code
+    2 00000000                 AREA             reset,CODE,READONLY
+    3 00000000         ;user_code ;this label is neccessary
+    4 00000000         
+    5 00000000                 ENTRY
+    6 00000000                 IMPORT           RTN
+    7 00000000         
+    8 00000000         
+    9 00000000 40000800 
+                       SRAM_ADDR
+                               EQU              0x40000800
+   10 00000000 E0028000 
+                       IO0BASE EQU              0xE0028000
+   11 00000000         ;IO0PIN  EQU 0
+   12 00000000 00000008 
+                       IO0DIR  EQU              0x8
+   13 00000000 00000004 
+                       IO0SET  EQU              0x4
+   14 00000000 0000000C 
+                       IO0CLR  EQU              0xC
+   15 00000000         ;IO0PIN  EQU 0xE0028000  
+   16 00000000         
+   17 00000000         
+   18 00000000 00000001 
+                       delayone
+                               EQU              0x1         ;00061A80  ;second 
+                                                            dely      //4mil is
+                                                             about 1 second del
+                                                            ay for arm
+   19 00000000 000186A0 
+                       debounce
+                               EQU              0x000186A0  ;for testing purpos
+                                                            es only
+   20 00000000         
+   21 00000000         user_code                            ;this label is necc
+                                                            essary
+   22 00000000         
+   23 00000000         ;-------------------------------------------------------
+                       --------------------------------------------------  
+   24 00000000         task1
+   25 00000000 E002C000 
+                       PINSEL0 EQU              0xE002C000  ;pin function for p
+                                                            ort 0, equate symbo
+                                                            lic name PINSEL0 as
+                                                             address 0xE002C000
+                                                            
+   26 00000000         
+   27 00000000         ;;Selecting funcion as GPIO by writing all zeros to give
+                       n address 
+   28 00000000 E3A00000        MOV              r0,#0       ;moves #0 into regi
+                                                            ster r0      
+   29 00000004 E59F10D0        LDR              r1,=PINSEL0 ;puts what is store
+                                                            d in register 0xE00
+                                                            2C000 (PINSEL0) in 
+                                                            r1 register; CANNOT
+                                                             PUT MOV, outputs e
+                                                            rror in keil
+   30 00000008 E5810000        STR              r0,[r1]     ;copies value store
+                                                            d in r0 to memory a
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                            ddress specified by
+                                                             r1
+   31 0000000C         
+   32 0000000C         ;set IODIRECTION
+   33 0000000C EB00002C        BL               setIODIR
+   34 00000010         
+   35 00000010         ;Initial set of LEDs
+   36 00000010 EB000024        BL               clrset
+   37 00000014         
+   38 00000014 EAFFFFFF        B                task2
+   39 00000018         
+   40 00000018         
+   41 00000018         ;-------------------------------------------------------
+                       --------------------------------------------------   
+   42 00000018         task2                                ;Turn on lights usi
+                                                            ng delay from anoth
+                                                            er file
+   43 00000018         
+   44 00000018 E3A05001        LDR              r5,=delayone
+   45 0000001C EBFFFFFE        BL               RTN         ;delay subroutine h
+                                                            ere 
+   46 00000020         
+   47 00000020 EF000001        SWI              #1
+   48 00000024         
+   49 00000024 EAFFFFFF        B                task3
+   50 00000028         
+   51 00000028         
+   52 00000028         ;-------------------------------------------------------
+                       --------------------------------------------------   
+   53 00000028         task3
+   54 00000028         
+   55 00000028         
+   56 00000028 E3A05001        LDR              r5,=delayone
+   57 0000002C EBFFFFFE        BL               RTN         ;delay subroutine h
+                                                            ere
+   58 00000030 EF000000        SWI              #0          ;to turn off all li
+                                                            ghts
+   59 00000034         
+   60 00000034 E3A05001        LDR              r5,=delayone
+   61 00000038 EBFFFFFE        BL               RTN
+   62 0000003C EF000002        SWI              #2          ;to turn on first f
+                                                            our lights
+   63 00000040         
+   64 00000040 E3A05001        LDR              r5,=delayone
+   65 00000044 EBFFFFFE        BL               RTN         ;delay subroutine h
+                                                            ere
+   66 00000048         
+   67 00000048 EF000003        SWI              #3          ;to turn on last fo
+                                                            ur lights
+   68 0000004C         
+   69 0000004C E3A05001        LDR              r5,=delayone
+   70 00000050 EBFFFFFE        BL               RTN         ;delay subroutine h
+                                                            ere
+   71 00000054         
+   72 00000054 EF000000        SWI              #0          ;turns it all off 
+   73 00000058         
+   74 00000058 EAFFFFFF        B                task4
+   75 0000005C         ;-------------------------------------------------------
+                       --------------------------------------------------
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   76 0000005C         
+   77 0000005C         task4
+   78 0000005C E002C004 
+                       PINSEL1 EQU              0xE002C004
+   79 0000005C E01FC148 
+                       EXTMODE EQU              0xE01FC148
+   80 0000005C E01FC14C 
+                       EXTPOLAR
+                               EQU              0xE01FC14C
+   81 0000005C E01FC140 
+                       EXTINT  EQU              0xE01FC140
+   82 0000005C FFFFF00C 
+                       VICIntSel
+                               EQU              0xFFFFF00C
+   83 0000005C FFFFF010 
+                       VICIntEna
+                               EQU              0xFFFFF010
+   84 0000005C         
+   85 0000005C         ;configure pins
+   86 0000005C E59F307C        LDR              R3,=0x301
+   87 00000060 E59F407C        LDR              R4,=PINSEL1
+   88 00000064 E5843000        STR              R3,[R4]
+   89 00000068         
+   90 00000068         ;selecting edge sensitivity
+   91 00000068 E3A03009        LDR              R3,=0x9
+   92 0000006C E59F4074        LDR              R4,=EXTMODE
+   93 00000070 E5843000        STR              R3,[R4]
+   94 00000074         
+   95 00000074         ;choosing signal polarity
+   96 00000074 E3A03000        LDR              R3,=0x0
+   97 00000078 E59F406C        LDR              R4,=EXTPOLAR
+   98 0000007C E5843000        STR              R3,[R4]
+   99 00000080         
+  100 00000080         ;clearing flags
+  101 00000080 E3A0300A        LDR              r3,=0xA
+  102 00000084 E59F4064        LDR              r4, =EXTINT
+  103 00000088 E5843000        STR              r3, [r4]
+  104 0000008C         
+  105 0000008C         ;
+  106 0000008C E3A03802        LDR              r3,=0x20000
+  107 00000090 E59F405C        LDR              r4, =VICIntSel
+  108 00000094 E5843000        STR              r3, [r4]
+  109 00000098         
+  110 00000098         ;
+  111 00000098 E3A03909        LDR              r3,=0x24000
+  112 0000009C E59F4054        LDR              r4, =VICIntEna
+  113 000000A0 E5843000        STR              r3, [r4]
+  114 000000A4         
+  115 000000A4         
+  116 000000A4 EA00000A        B                endref
+  117 000000A8         
+  118 000000A8         clrset                               ;initally clearing 
+                                                            so all lights are b
+                                                            ack off from task1
+  119 000000A8 E3A00CFF        MOV              r0, #0x0000FF00 ;moves 0x0000FF
+                                                            00 (binary 11111111
+                                                            00000000) into r0 r
+                                                            egister. Pins 8-13,
+                                                            15 gets declared as
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+                                                             output and 14 as i
+                                                            nput 
+  120 000000AC E59F1048        LDR              r1, =IO0BASE ;puts 0xE0028008 o
+                                                            r IO0DIR to r1 regi
+                                                            ster
+  121 000000B0 E581000C        STR              r0, [r1,#IO0CLR]
+  122 000000B4         
+  123 000000B4 E3A00CFF        MOV              r0, #0x0000FF00 ;moves 0x0000FF
+                                                            00 (binary 11111111
+                                                            00000000) into r0 r
+                                                            egister. Pins 8-13,
+                                                            15 gets declared as
+                                                             output and 14 as i
+                                                            nput 
+  124 000000B8 E59F103C        LDR              r1, =IO0BASE ;puts 0xE0028008 o
+                                                            r IO0DIR to r1 regi
+                                                            ster
+  125 000000BC E5810004        STR              r0, [r1,#IO0SET]
+  126 000000C0         
+  127 000000C0 E12FFF1E        BX               lr
+  128 000000C4         
+  129 000000C4         setIODIR                             ;Selecting signal d
+                                                            irection of each po
+                                                            rt pin, we put '1' 
+                                                            in each to bit to m
+                                                            ake it an output pi
+                                                            n
+  130 000000C4 E3A00CFF        MOV              r0, #0x0000FF00 ;moves 0x0000FF
+                                                            00 (binary 11111111
+                                                            00000000) into r0 r
+                                                            egister. Pins 8-13,
+                                                            15 gets declared as
+                                                             output and 14 as i
+                                                            nput 
+  131 000000C8 E59F102C        LDR              r1, =IO0BASE ;puts 0xE0028008 o
+                                                            r IO0DIR to r1 regi
+                                                            ster
+  132 000000CC E5810008        STR              r0, [r1,#IO0DIR] ;copies value 
+                                                            stored in r0 (0x000
+                                                            0BF00) to memory ad
+                                                            dress of r1
+  133 000000D0         
+  134 000000D0 E12FFF1E        BX               lr
+  135 000000D4         
+  136 000000D4         
+  137 000000D4         ;;debounce 
+  138 000000D4         ;;LDR  r5,=0x2;FA0
+  139 000000D4         ;;LP   SUBS r5,#1
+  140 000000D4         ;;BNE  LP
+  141 000000D4         
+  142 000000D4         ;;MOV  PC,lr
+  143 000000D4         
+  144 000000D4         endref
+  145 000000D4         
+  146 000000D4 EAFFFFFE 
+                       stop    B                stop
+  147 000000D8 0000BF00 
+                       LEDPINS DCD              0x0000BF00
+  148 000000DC                 END                          ; End of code
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+              E002C000 
+              00000301 
+              E002C004 
+              E01FC148 
+              E01FC14C 
+              E01FC140 
+              FFFFF00C 
+              FFFFF010 
+              E0028000 
+Command Line: --debug --xref --apcs=interwork --depend=.\main.d -o.\main.o -IC:
+\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\Philips --pred
+efine="__EVAL SETA 1" --list=.\main.lst main.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+LEDPINS 000000D8
+
+Symbol: LEDPINS
+   Definitions
+      At line 147 in file main.s
+   Uses
+      None
+Comment: LEDPINS unused
+clrset 000000A8
+
+Symbol: clrset
+   Definitions
+      At line 118 in file main.s
+   Uses
+      At line 36 in file main.s
+Comment: clrset used once
+endref 000000D4
+
+Symbol: endref
+   Definitions
+      At line 144 in file main.s
+   Uses
+      At line 116 in file main.s
+Comment: endref used once
+reset 00000000
+
+Symbol: reset
+   Definitions
+      At line 2 in file main.s
+   Uses
+      None
+Comment: reset unused
+setIODIR 000000C4
+
+Symbol: setIODIR
+   Definitions
+      At line 129 in file main.s
+   Uses
+      At line 33 in file main.s
+Comment: setIODIR used once
+stop 000000D4
+
+Symbol: stop
+   Definitions
+      At line 146 in file main.s
+   Uses
+      At line 146 in file main.s
+Comment: stop used once
+task1 00000000
+
+Symbol: task1
+   Definitions
+      At line 24 in file main.s
+   Uses
+      None
+Comment: task1 unused
+task2 00000018
+
+Symbol: task2
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+   Definitions
+      At line 42 in file main.s
+   Uses
+      At line 38 in file main.s
+Comment: task2 used once
+task3 00000028
+
+Symbol: task3
+   Definitions
+      At line 53 in file main.s
+   Uses
+      At line 49 in file main.s
+Comment: task3 used once
+task4 0000005C
+
+Symbol: task4
+   Definitions
+      At line 77 in file main.s
+   Uses
+      At line 74 in file main.s
+Comment: task4 used once
+user_code 00000000
+
+Symbol: user_code
+   Definitions
+      At line 21 in file main.s
+   Uses
+      At line 1 in file main.s
+Comment: user_code used once
+11 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+EXTINT E01FC140
+
+Symbol: EXTINT
+   Definitions
+      At line 81 in file main.s
+   Uses
+      At line 102 in file main.s
+Comment: EXTINT used once
+EXTMODE E01FC148
+
+Symbol: EXTMODE
+   Definitions
+      At line 79 in file main.s
+   Uses
+      At line 92 in file main.s
+Comment: EXTMODE used once
+EXTPOLAR E01FC14C
+
+Symbol: EXTPOLAR
+   Definitions
+      At line 80 in file main.s
+   Uses
+      At line 97 in file main.s
+Comment: EXTPOLAR used once
+IO0BASE E0028000
+
+Symbol: IO0BASE
+   Definitions
+      At line 10 in file main.s
+   Uses
+      At line 120 in file main.s
+      At line 124 in file main.s
+      At line 131 in file main.s
+
+IO0CLR 0000000C
+
+Symbol: IO0CLR
+   Definitions
+      At line 14 in file main.s
+   Uses
+      At line 121 in file main.s
+Comment: IO0CLR used once
+IO0DIR 00000008
+
+Symbol: IO0DIR
+   Definitions
+      At line 12 in file main.s
+   Uses
+      At line 132 in file main.s
+Comment: IO0DIR used once
+IO0SET 00000004
+
+Symbol: IO0SET
+   Definitions
+      At line 13 in file main.s
+   Uses
+      At line 125 in file main.s
+Comment: IO0SET used once
+PINSEL0 E002C000
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Absolute symbols
+
+
+Symbol: PINSEL0
+   Definitions
+      At line 25 in file main.s
+   Uses
+      At line 29 in file main.s
+Comment: PINSEL0 used once
+PINSEL1 E002C004
+
+Symbol: PINSEL1
+   Definitions
+      At line 78 in file main.s
+   Uses
+      At line 87 in file main.s
+Comment: PINSEL1 used once
+SRAM_ADDR 40000800
+
+Symbol: SRAM_ADDR
+   Definitions
+      At line 9 in file main.s
+   Uses
+      None
+Comment: SRAM_ADDR unused
+VICIntEna FFFFF010
+
+Symbol: VICIntEna
+   Definitions
+      At line 83 in file main.s
+   Uses
+      At line 112 in file main.s
+Comment: VICIntEna used once
+VICIntSel FFFFF00C
+
+Symbol: VICIntSel
+   Definitions
+      At line 82 in file main.s
+   Uses
+      At line 107 in file main.s
+Comment: VICIntSel used once
+debounce 000186A0
+
+Symbol: debounce
+   Definitions
+      At line 19 in file main.s
+   Uses
+      None
+Comment: debounce unused
+delayone 00000001
+
+Symbol: delayone
+   Definitions
+      At line 18 in file main.s
+   Uses
+      At line 44 in file main.s
+      At line 56 in file main.s
+      At line 60 in file main.s
+      At line 64 in file main.s
+      At line 69 in file main.s
+
+
+
+
+ARM Macro Assembler    Page 3 Alphabetic symbol ordering
+Absolute symbols
+
+14 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+RTN 00000000
+
+Symbol: RTN
+   Definitions
+      At line 6 in file main.s
+   Uses
+      At line 45 in file main.s
+      At line 57 in file main.s
+      At line 61 in file main.s
+      At line 65 in file main.s
+      At line 70 in file main.s
+
+1 symbol
+359 symbols in table

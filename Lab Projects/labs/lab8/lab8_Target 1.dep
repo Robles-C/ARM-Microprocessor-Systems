@@ -1,0 +1,5 @@
+Dependencies for Project 'lab8', Target 'Target 1': (DO NOT MODIFY !)
+F (.\delay_arm.s)(0x638C64FA)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips--list .\delay_arm.lst --xref -o .\delay_arm.o --depend .\delay_arm.d)
+F (.\lab8_t1.s)(0x63771073)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips--list .\lab8_t1.lst --xref -o .\lab8_t1.o --depend .\lab8_t1.d)
+F (.\mystartup.s)(0x63644C02)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips--list .\mystartup.lst --xref -o .\mystartup.o --depend .\mystartup.d)
+F (.\delay.c)(0x63867A03)(-c --cpu ARM7TDMI -D__EVAL -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips-o .\delay.o --omf_browse .\delay.crf --depend .\delay.d)

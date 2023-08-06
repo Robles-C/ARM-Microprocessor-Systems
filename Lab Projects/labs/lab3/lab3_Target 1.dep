@@ -1,0 +1,3 @@
+Dependencies for Project 'lab3', Target 'Target 1': (DO NOT MODIFY !)
+F (.\mystartup.s)(0x63362267)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips--list .\mystartup.lst --xref -o .\mystartup.o --depend .\mystartup.d)
+F (..\..\..\..\Downloads\lab4tasks.s)(0x63362269)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\Philips--list .\lab4tasks.lst --xref -o .\lab4tasks.o --depend .\lab4tasks.d)

@@ -1,0 +1,148 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 GLOBAL           Reset_Handler
+    2 00000000                 AREA             mycode, CODE, Readonly
+    3 00000000         
+    4 00000000         Reset_Handler                        ;this label is nece
+                                                            ssary for the first
+                                                             line of your code.
+                                                            
+    5 00000000         
+    6 00000000 E002C000 
+                       PINSEL0 EQU              0xE002C000  ;pin function selec
+                                                            tion for port 0,
+    7 00000000 E0028008 
+                       IO0DIR  EQU              0xE0028008
+    8 00000000 E0028000 
+                       IO0PIN  EQU              0xE0028000
+    9 00000000         ; hex value 0x1FE0000 represents values of 1 in bits 8-1
+                       5 of a 32 bit word
+   10 00000000 40000000 
+                       OUTPINS EQU              0x40000000
+   11 00000000 BFFFFFFF 
+                       ALLOFF  EQU              0xBFFFFFFF
+   12 00000000 00000000 
+                       ALLON   EQU              0x0
+   13 00000000         
+   14 00000000         ;moves value 0 into r1
+   15 00000000 E3A00000        MOV              r0, #0
+   16 00000004         ;loads resigter at location 0xE002C000
+   17 00000004 E59F101C        LDR              r1, =PINSEL0
+   18 00000008         ;stores 0 at 0xE002C000
+   19 00000008 E5810000        STR              r0,[r1]
+   20 0000000C         ; loads register at location 0xE0028008
+   21 0000000C E59F2018        LDR              r2, =IO0DIR
+   22 00000010         ; loads Outpt into r3
+   23 00000010 E3A03101        LDR              r3, =OUTPINS
+   24 00000014         ;puts outpt value at 0xE0028008
+   25 00000014 E5823000        STR              r3, [r2]
+   26 00000018         
+   27 00000018 E3E04101        MOV              r4, #ALLOFF
+   28 0000001C E59F500C        LDR              r5, =IO0PIN
+   29 00000020 E5854000        STR              r4, [r5]
+   30 00000024         
+   31 00000024         
+   32 00000024 EAFFFFFE 
+                       stop    B                stop        ;endless loop to ma
+                                                            ke the program hang
+                                                            
+   33 00000028                 END                          ;assembler directiv
+                                                            e to indicate the e
+                                                            nd of code
+              E002C000 
+              E0028008 
+              E0028000 
+Command Line: --debug --xref --apcs=interwork --depend=.\lab4.d -o.\lab4.o -IC:
+\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\Philips --pred
+efine="__EVAL SETA 1" --list=.\lab4.lst lab4.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Reset_Handler 00000000
+
+Symbol: Reset_Handler
+   Definitions
+      At line 4 in file lab4.s
+   Uses
+      At line 1 in file lab4.s
+Comment: Reset_Handler used once
+mycode 00000000
+
+Symbol: mycode
+   Definitions
+      At line 2 in file lab4.s
+   Uses
+      None
+Comment: mycode unused
+stop 00000024
+
+Symbol: stop
+   Definitions
+      At line 32 in file lab4.s
+   Uses
+      At line 32 in file lab4.s
+Comment: stop used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+ALLOFF BFFFFFFF
+
+Symbol: ALLOFF
+   Definitions
+      At line 11 in file lab4.s
+   Uses
+      At line 27 in file lab4.s
+Comment: ALLOFF used once
+ALLON 00000000
+
+Symbol: ALLON
+   Definitions
+      At line 12 in file lab4.s
+   Uses
+      None
+Comment: ALLON unused
+IO0DIR E0028008
+
+Symbol: IO0DIR
+   Definitions
+      At line 7 in file lab4.s
+   Uses
+      At line 21 in file lab4.s
+Comment: IO0DIR used once
+IO0PIN E0028000
+
+Symbol: IO0PIN
+   Definitions
+      At line 8 in file lab4.s
+   Uses
+      At line 28 in file lab4.s
+Comment: IO0PIN used once
+OUTPINS 40000000
+
+Symbol: OUTPINS
+   Definitions
+      At line 10 in file lab4.s
+   Uses
+      At line 23 in file lab4.s
+Comment: OUTPINS used once
+PINSEL0 E002C000
+
+Symbol: PINSEL0
+   Definitions
+      At line 6 in file lab4.s
+   Uses
+      At line 17 in file lab4.s
+Comment: PINSEL0 used once
+6 symbols
+342 symbols in table

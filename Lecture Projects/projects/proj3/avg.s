@@ -1,0 +1,8 @@
+		GLOBAL	avg
+		AREA	mycode,CODE,READONLY
+		ENTRY
+		IMPORT proj3
+		IMPORT mult
+		IMPORT sav
+
+	END

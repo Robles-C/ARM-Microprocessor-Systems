@@ -1,0 +1,41 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;AREA Reset, CODE, Readonly
+    2 00000000         ;ENTRY
+    3 00000000         ;ADD0  EQU 0x40000000
+    4 00000000         ;COUNT  RN R4
+    5 00000000         ;COUNT2 RN R3
+    6 00000000         ;;load address1 into r1
+    7 00000000         ;LDR R2,=ADD0
+    8 00000000         ;MOV COUNT,#12
+    9 00000000         ;MOV COUNT2,#100
+   10 00000000         ;MOV R5, #0
+   11 00000000         ;MOV R6, #1
+   12 00000000         ;STR R7, [R2]
+   13 00000000         
+   14 00000000         ;;first 12 numbers stored in memory using again loop
+   15 00000000         ;AGAIN  
+   16 00000000         ;ADD R7, R6, R5
+   17 00000000         ;MOV R5, R6
+   18 00000000         ;MOV R6, R7
+   19 00000000         ;STR R7, [R2]
+   20 00000000         ;ADD R2, R2,#128
+   21 00000000         
+   22 00000000         ;SUBS COUNT,COUNT,#1
+   23 00000000         
+   24 00000000         ;BNE AGAIN
+   25 00000000         
+   26 00000000         
+   27 00000000         
+   28 00000000         
+   29 00000000         ;stop B stop
+   30 00000000         ;END
+                       
+Command Line: --debug --xref --apcs=interwork --depend=.\proj2.d -o.\proj2.o -I
+C:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\Philips --pr
+edefine="__EVAL SETA 1" --list=.\proj2.lst proj2.s
+331 symbols in table

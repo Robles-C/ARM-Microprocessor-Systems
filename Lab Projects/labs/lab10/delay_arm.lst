@@ -1,0 +1,49 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 GLOBAL           RTN
+    2 00000000                 AREA             mycode,CODE,READONLY
+    3 00000000                 ENTRY
+    4 00000000         ;STMFD sp!,{LR}
+    5 00000000         
+    6 00000000 E2555001 
+                       RTN     SUBS             r5,#1
+    7 00000004 1AFFFFFE        BNE              RTN         ;jump to given addr
+                                                            ess if not zero   
+    8 00000008 01A0F00E        MOVEQ            pc,lr
+    9 0000000C         ;LDMFD sp!,{PC}  ;works without LDMFD and STMFD
+   10 0000000C         
+   11 0000000C EAFFFFFE        B                RTN
+   12 00000010                 END
+Command Line: --debug --xref --apcs=interwork --depend=.\delay_arm.d -o.\delay_
+arm.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\Inc\Phil
+ips --predefine="__EVAL SETA 1" --list=.\delay_arm.lst delay_arm.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+RTN 00000000
+
+Symbol: RTN
+   Definitions
+      At line 6 in file delay_arm.s
+   Uses
+      At line 1 in file delay_arm.s
+      At line 7 in file delay_arm.s
+      At line 11 in file delay_arm.s
+
+mycode 00000000
+
+Symbol: mycode
+   Definitions
+      At line 2 in file delay_arm.s
+   Uses
+      None
+Comment: mycode unused
+2 symbols
+333 symbols in table
